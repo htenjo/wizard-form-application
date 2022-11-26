@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  wizard-form-application:
+    build: .
+    image: htenjo/wizard-form-application
+    container_name: wizard-form-application
+    ports:
+      - "9090:8080"
+    depends_on:
+      - mongo
+    env_file: .env
+
+  hello-mongo-web:
+    image: htenjo/form-model
+    container_name: form-model
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    env_file: .env
+
+  mongo-express:
+    image: mongo-express
+    container_name: hello_mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/
+
+  mongo:
+    image: mongo
+    container_name: hello_mongo
+    restart: always
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
