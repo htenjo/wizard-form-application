@@ -18,4 +18,11 @@ public class WizardModel {
     private String country;
     private WizardState state;
     private Map<String, Object> values;
+
+    public WizardModel(String formModelId, String country, WizardState state, Map<String, Object> values) {
+        this.formModelId = formModelId;
+        this.country = country;
+        this.state = state;
+        this.values = values;
+    }
 }

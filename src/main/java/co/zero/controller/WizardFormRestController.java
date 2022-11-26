@@ -34,8 +34,26 @@ public class WizardFormRestController implements WizardFormAPI {
     }
 
     @Override
+    public WizardModel updateValues(String wizardModelId, WizardModel model) {
+        validateModelId(wizardModelId, model);
+        model.setId(wizardModelId);
+        return service.updateValues(model);
+    }
+
+    @Override
     public void delete(String wizardModelId) {
         log.info("::: Deleting by wizardModelId = {}", wizardModelId);
         service.delete(wizardModelId);
+    }
+
+    /**
+     * Validate both ids match when the model provides one.
+     */
+    private void validateModelId(String wizardModelId, WizardModel model) {
+        boolean modelIdExist = model.getId() != null && !model.getId().isEmpty();
+
+        if (modelIdExist && !model.getId().equalsIgnoreCase(wizardModelId)) {
+            throw new IllegalArgumentException("ModelID and ID Param don't match");
+        }
     }
 }

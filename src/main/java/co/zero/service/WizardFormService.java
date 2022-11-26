@@ -33,6 +33,18 @@ public class WizardFormService {
         return repository.findById(wizardId);
     }
 
+    public WizardModel updateValues(WizardModel wizardModel) {
+        WizardModel model = repository.findById(wizardModel.getId())
+                .orElseThrow(() -> new IllegalArgumentException("::: Wizard not found by ID" + wizardModel.getId()));
+        model.setValues(wizardModel.getValues());
+
+        if (wizardModel.getState() != null) {
+            model.setState(wizardModel.getState());
+        }
+
+        return repository.save(model);
+    }
+
     public void delete(String wizardId) {
         repository.deleteById(wizardId);
     }
@@ -40,6 +52,8 @@ public class WizardFormService {
     public Optional<Map<String, Object>> findFormModel(String wizardModelId) {
         WizardModel wizardModel = repository.findById(wizardModelId)
                 .orElseThrow(() -> new IllegalArgumentException("::: WizardModel not found"));
+
+
         return gateway.findFormModel(wizardModel.getFormModelId());
     }
 }

@@ -11,7 +11,7 @@ services:
       - mongo
     env_file: .env
 
-  hello-mongo-web:
+  form-model:
     image: htenjo/form-model
     container_name: form-model
     ports:
